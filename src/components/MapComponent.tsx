@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
-import "leaflet-defaulticon-compatibility";
+// import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
+// import "leaflet-defaulticon-compatibility";
 import { locations } from '../data';
 import FilterComponent from './FilterComponent';
 import { Location } from '../type';
@@ -14,8 +14,7 @@ const App: React.FC = () => {
   const filteredLocations = filterType === 'All' ? locations : locations.filter(location => location.type === filterType);
 
   return (
-    <div>
-      <h1>Renewable Energy Source Locator</h1>
+    <div className='map-container'>
       <FilterComponent filterType={filterType} setFilterType={setFilterType} />
       <MapContainer center={[6.5244, 3.3792]} zoom={10} style={{ height: "100vh", width: "100%" }}>
         <TileLayer
@@ -34,8 +33,11 @@ const App: React.FC = () => {
             {selectedLocation && selectedLocation.id === location.id && (
               <Popup
                 position={[selectedLocation.position.lat, selectedLocation.position.lng]}
-                onClose={() => setSelectedLocation(null)}
-              >
+                eventHandlers={{
+                  remove: () => {
+                    setSelectedLocation(null);
+                  },
+                }}              >
                 <div>
                   <h2>{selectedLocation.name}</h2>
                   <p>Type: {selectedLocation.type}</p>

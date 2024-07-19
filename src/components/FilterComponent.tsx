@@ -7,7 +7,7 @@ interface FilterComponentProps {
 
 const FilterComponent: React.FC<FilterComponentProps> = ({ filterType, setFilterType }) => {
   return (
-    <div>
+    <div className='filter-component'>
       <label>Filter by Type: </label>
       <select value={filterType} onChange={(e) => setFilterType(e.target.value)}>
         <option value="All">All</option>
