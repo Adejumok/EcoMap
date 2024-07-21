@@ -27,7 +27,8 @@ const App: React.FC = () => {
         `https://developer.nrel.gov/api/solar/solar_resource/v1.json?api_key=${API_KEY}&lat=${lat}&lon=${lng}`
       );
       const data = await response.json();
-      setSolarData(data.outputs.avg_dni); // Adjust according to API response structure
+      console.log(data)
+      setSolarData(data.outputs.avg_dni);
     } catch (error) {
       console.error('Error fetching solar data:', error);
     }
@@ -41,7 +42,6 @@ const App: React.FC = () => {
 
   const filteredLocations = filterType === 'All' ? locations : locations.filter(location => location.type === filterType);
   const filteredExpansionSites = filterType === 'All' ? expansionSites : expansionSites.filter(site => site.type === filterType);
-
 
   const getIcon = (type: string) => {
     let color;
@@ -60,17 +60,16 @@ const App: React.FC = () => {
     }
     return L.divIcon({
       className: 'custom-icon',
-      html: `<span style="background-color:${color};" class="marker-icon"></span>`,
+      html: `<div style="background-color:${color}; width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold;">${type[0]}</div>`,
     });
   };
-
 
   return (
     <div className="app-container">
       <h1>Renewable Energy Source Locator</h1>
       <FilterComponent filterType={filterType} setFilterType={setFilterType} />
       <div className="map-container">
-        <MapContainer center={[6.5244, 3.3792]} zoom={10} style={{ height: '100%', width: '100%' }}>
+        <MapContainer center={[37.7749, -122.4194]} zoom={5} style={{ height: '100%', width: '100%' }}>
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
@@ -78,6 +77,7 @@ const App: React.FC = () => {
             <Marker
               key={location.id}
               position={[location.position.lat, location.position.lng]}
+              icon={getIcon(location.type)}
               eventHandlers={{
                 click: () => {
                   setSelectedLocation(location);
@@ -114,6 +114,7 @@ const App: React.FC = () => {
             <Marker
               key={site.id}
               position={[site.position.lat, site.position.lng]}
+              icon={getIcon(site.type)}
               eventHandlers={{
                 click: () => {
                   setSelectedExpansion(site);

@@ -1,28 +1,38 @@
 .app-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .map-container {
-    width: 60%;
-    height: 60vh;
-    margin-top: 20px;
-    border: 2px solid #ccc;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-  .data-container {
-    width: 60%;
-    margin-top: 20px;
-    border: 2px solid #ccc; 
-    padding: 20px;
-  }
-  
-  h1 {
-    margin-bottom: 20px;
-  }
-  
-  .filter-component {
-    margin-bottom: 20px;
-  }
-  
+.map-container {
+  width: 80%;
+  height: 80vh; 
+  border: 2px solid #ccc;
+}
+
+h1 {
+  margin: 20px 0;
+}
+
+.filter-component {
+  margin: 20px;
+}
+
+.custom-icon {
+  background-color: red;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+}
+
+.marker-icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
