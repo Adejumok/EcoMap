@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { fetchOSMData } from './fetchOSMData';
-import FilterComponent from './FilterComponent';
+import FilterComponent from './components/FilterComponent';
 import { Location } from './types';
 import './App.css';
 
