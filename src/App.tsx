@@ -2,57 +2,45 @@ import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { locations, expansionSites } from './data';
-import FilterComponent from '../src/components/FilterComponent';
-import { Location, ExpansionSite } from './types';
+import { fetchOSMData } from './fetchOSMData';
+import FilterComponent from './FilterComponent';
+import { Location } from './types';
 import './App.css';
-
-const API_KEY = import.meta.env.VITE_NREL_API_KEY as string;
-
-interface SolarData {
-  avg_dni: number;
-  avg_ghi: number;
-  avg_lat_tilt: number;
-}
 
 const App: React.FC = () => {
   const [filterType, setFilterType] = useState<string>('All');
+  const [locations, setLocations] = useState<Location[]>([]);
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
-  const [selectedExpansion, setSelectedExpansion] = useState<ExpansionSite | null>(null);
-  const [solarData, setSolarData] = useState<SolarData | null>(null);
 
-  const fetchSolarData = async (lat: number, lng: number) => {
-    try {
-      const response = await fetch(
-        `https://developer.nrel.gov/api/solar/solar_resource/v1.json?api_key=${API_KEY}&lat=${lat}&lon=${lng}`
-      );
-      const data = await response.json();
-      console.log(data)
-      setSolarData(data.outputs.avg_dni);
-    } catch (error) {
-      console.error('Error fetching solar data:', error);
-    }
+  const fetchLocations = async () => {
+    const bbox: [number, number, number, number] = [24.396308, -125.0, 49.384358, -66.93457]; // USA bounding box
+    const data = await fetchOSMData(bbox);
+    const parsedLocations = data.map((element: any) => ({
+      id: element.id,
+      name: element.tags.name || 'Unknown',
+      position: { lat: element.lat, lng: element.lon },
+      type: element.tags['generator:source'],
+      impact: 'Unknown', // Replace with real data if available
+    }));
+    setLocations(parsedLocations);
   };
 
   useEffect(() => {
-    if (selectedLocation) {
-      fetchSolarData(selectedLocation.position.lat, selectedLocation.position.lng);
-    }
-  }, [selectedLocation]);
+    fetchLocations();
+  }, []);
 
   const filteredLocations = filterType === 'All' ? locations : locations.filter(location => location.type === filterType);
-  const filteredExpansionSites = filterType === 'All' ? expansionSites : expansionSites.filter(site => site.type === filterType);
 
   const getIcon = (type: string) => {
     let color;
     switch (type) {
-      case 'Solar':
+      case 'solar':
         color = 'orange';
         break;
-      case 'Wind':
+      case 'wind':
         color = 'blue';
         break;
-      case 'Hydro':
+      case 'hydro':
         color = 'green';
         break;
       default:
@@ -60,7 +48,7 @@ const App: React.FC = () => {
     }
     return L.divIcon({
       className: 'custom-icon',
-      html: `<div style="background-color:${color}; width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold;">${type[0]}</div>`,
+      html: `<div style="background-color:${color}; width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold;">${type[0].toUpperCase()}</div>`,
     });
   };
 
@@ -81,7 +69,6 @@ const App: React.FC = () => {
               eventHandlers={{
                 click: () => {
                   setSelectedLocation(location);
-                  setSelectedExpansion(null);
                 },
               }}
             >
@@ -90,7 +77,6 @@ const App: React.FC = () => {
                   eventHandlers={{
                     remove: () => {
                       setSelectedLocation(null);
-                      setSolarData(null);
                     },
                   }}
                 >
@@ -98,42 +84,6 @@ const App: React.FC = () => {
                     <h2>{selectedLocation.name}</h2>
                     <p>Type: {selectedLocation.type}</p>
                     <p>Environmental Impact: {selectedLocation.impact}</p>
-                    {solarData && (
-                      <div>
-                        <p>Average DNI: {solarData.avg_dni}</p>
-                        <p>Average GHI: {solarData.avg_ghi}</p>
-                        <p>Average Lat Tilt: {solarData.avg_lat_tilt}</p>
-                      </div>
-                    )}
-                  </div>
-                </Popup>
-              )}
-            </Marker>
-          ))}
-          {filteredExpansionSites.map(site => (
-            <Marker
-              key={site.id}
-              position={[site.position.lat, site.position.lng]}
-              icon={getIcon(site.type)}
-              eventHandlers={{
-                click: () => {
-                  setSelectedExpansion(site);
-                  setSelectedLocation(null);
-                },
-              }}
-            >
-              {selectedExpansion && selectedExpansion.id === site.id && (
-                <Popup
-                  eventHandlers={{
-                    remove: () => {
-                      setSelectedExpansion(null);
-                    },
-                  }}
-                >
-                  <div>
-                    <h2>{selectedExpansion.name}</h2>
-                    <p>Type: {selectedExpansion.type}</p>
-                    <p>Expansion Potential: {selectedExpansion.potential}</p>
                   </div>
                 </Popup>
               )}
