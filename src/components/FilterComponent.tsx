@@ -7,13 +7,18 @@ interface FilterComponentProps {
 
 const FilterComponent: React.FC<FilterComponentProps> = ({ filterType, setFilterType }) => {
   return (
-    <div className='filter-component'>
-      <label>Filter by Type: </label>
-      <select value={filterType} onChange={(e) => setFilterType(e.target.value)}>
+    <div className="filter-component">
+      <label htmlFor="filter">Filter by Type: </label>
+      <select
+        id="filter"
+        value={filterType}
+        onChange={(e) => setFilterType(e.target.value)}
+      >
         <option value="All">All</option>
         <option value="Solar">Solar</option>
-        <option value="Wind">Wind</option>
-        <option value="Hydro">Hydro</option>
+        <option value="UtilityRate">Utility Rate</option>
+        <option value="CensusRate">Census Rate</option>
+        <option value="Buildings">Buildings</option>
       </select>
     </div>
   );

@@ -5,7 +5,7 @@ import 'leaflet/dist/leaflet.css';
 // import "leaflet-defaulticon-compatibility";
 import { locations } from '../data';
 import FilterComponent from './FilterComponent';
-import { Location } from '../type';
+import { Location } from '../types';
 
 const App: React.FC = () => {
   const [filterType, setFilterType] = useState<string>('All');
