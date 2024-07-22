@@ -15,10 +15,10 @@ const FilterComponent: React.FC<FilterComponentProps> = ({ filterType, setFilter
         onChange={(e) => setFilterType(e.target.value)}
       >
         <option value="All">All</option>
+        <option value="Gas">Gas</option>
+        <option value="Hydro">Hydro</option>
+        <option value="Wind">Wind</option>
         <option value="Solar">Solar</option>
-        <option value="UtilityRate">Utility Rate</option>
-        <option value="CensusRate">Census Rate</option>
-        <option value="Buildings">Buildings</option>
       </select>
     </div>
   );
