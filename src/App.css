@@ -18,18 +18,6 @@ h1 {
   margin: 20px;
 }
 
-.custom-icon {
-  background-color: red;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: bold;
-}
-
 .marker-icon {
   display: inline-block;
   width: 20px;

@@ -1,5 +1,5 @@
 export interface Location {
-    id: number;
+    id: string;
     name: string;
     position: {
       lat: number;
@@ -9,14 +9,5 @@ export interface Location {
     impact: string;
   }
   
-  export interface ExpansionSite {
-    id: number;
-    name: string;
-    position: {
-      lat: number;
-      lng: number;
-    };
-    type: string;
-    potential: string;
-  }
+
   
