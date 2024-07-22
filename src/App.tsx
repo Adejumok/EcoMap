@@ -34,7 +34,7 @@ const App: React.FC = () => {
     }
     return L.divIcon({
       className: 'custom-icon',
-      html: `<div style="background-color:${color}; width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:black; font-weight:bold;">${type[0]}</div>`,
+      html: `<div style="background-color:${color}; width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:black; font-weight:bold;"></div>`,
     });
   };
 
