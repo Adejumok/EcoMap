@@ -7,7 +7,6 @@ import { centralCoordinate } from './centralCoordinates';
 import './App.css';
 
 const App: React.FC = () => {
-  const [locations, setLocations] = useState<Location[]>([]);
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
 
   return (
@@ -27,7 +26,6 @@ const App: React.FC = () => {
                   name: 'Africa Eastern and Southern',
                   position: centralCoordinate,
                   type: 'renewable',
-                  impact: locations.map(loc => loc.impact).join(', '),
                 });
               },
             }}
@@ -42,7 +40,6 @@ const App: React.FC = () => {
               >
                 <div>
                   <h2>{selectedLocation.name}</h2>
-                  <p>Renewable Energy: {selectedLocation.impact}</p>
                 </div>
               </Popup>
             )}

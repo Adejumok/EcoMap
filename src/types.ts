@@ -6,7 +6,6 @@ export interface Location {
       lng: number;
     };
     type: string;
-    impact: string;
   }
   
 
